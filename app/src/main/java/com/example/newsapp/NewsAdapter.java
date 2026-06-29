@@ -49,7 +49,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Article article = articles.get(position);
 
-        holder.tvTitle.setText(article.title);
+        holder.tvTitle.setText(article.title != null ? article.title : "");
 
         Glide.with(context)
                 .load(article.image_url)
@@ -57,9 +57,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 .into(holder.ivImage);
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse(article.link));
-            context.startActivity(intent);
+            if (article.link != null && !article.link.isEmpty()) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(article.link));
+                context.startActivity(intent);
+            }
         });
     }
 
